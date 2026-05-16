@@ -489,3 +489,133 @@ if __name__ == '__main__':
         print(dict(a.nodes(data=True)).values())
         
     test_gcn_net()
+
+# =============================================================================
+# CandidateScoringNet — scores HPSO candidate node mappings
+#
+# Architecture
+# ─────────────
+# 1. Shared context encoder: lightweight GNN over (p_net, v_net) → c ∈ R^d
+# 2. Per-candidate scorer:   MLP(c ⊕ candidate_features_i) → scalar logit
+#
+# The context embedding gives the scorer awareness of the current network state
+# (remaining resources, topology) while candidate_features supply mapping-
+# specific signals that the GNN cannot see without running per-candidate passes.
+# =============================================================================
+
+
+# ── tiny GAT for context encoding ────────────────────────────────────────────
+
+class _MiniGAT(nn.Module):
+    """Two-layer GAT: node features → node embeddings."""
+
+    def __init__(self, in_dim, hidden_dim, out_dim, edge_dim=None):
+        super().__init__()
+        self.conv1 = GATConv(in_dim, hidden_dim, edge_dim=edge_dim)
+        self.conv2 = GATConv(hidden_dim, out_dim, edge_dim=edge_dim)
+
+    def forward(self, data):
+        x, ei = data["x"], data["edge_index"]
+        ea    = data.get("edge_attr", None)
+        x = F.leaky_relu(self.conv1(x, ei, ea))
+        x = self.conv2(x, ei, ea)
+        return x
+
+
+class _GlobalPool(nn.Module):
+    """Attention-weighted global pooling."""
+
+    def __init__(self, dim):
+        super().__init__()
+        self.W = nn.Parameter(torch.empty(dim, dim))
+        nn.init.orthogonal_(self.W)
+
+    def forward(self, x, batch):
+        size   = int(batch.max().item()) + 1
+        mean_g = scatter(x, batch, dim=0, dim_size=size, reduce="mean")
+        attn   = torch.sigmoid((x * torch.tanh(mean_g @ self.W)[batch]).sum(-1, keepdim=True))
+        return scatter(attn * x, batch, dim=0, dim_size=size, reduce="add")
+
+
+# ── main scoring network ──────────────────────────────────────────────────────
+
+class CandidateScoringNet(nn.Module):
+    """
+    Parameters
+    ──────────
+    p_net_node_dim      : number of p_net node features
+    p_net_edge_dim      : number of p_net edge features  (None if absent)
+    v_net_node_dim      : number of v_net node features
+    v_net_edge_dim      : number of v_net edge features  (None if absent)
+    candidate_feat_dim  : features per HPSO candidate    (default 4)
+    num_candidates      : fixed action-space size        (default 5)
+    embedding_dim       : GNN / MLP hidden size          (default 64)
+    """
+
+    CANDIDATE_FEAT_DIM = 4   # [norm_cost, node_spread, max_hops_norm, feasibility]
+
+    def __init__(
+        self,
+        p_net_node_dim,
+        v_net_node_dim,
+        p_net_edge_dim=None,
+        v_net_edge_dim=None,
+        candidate_feat_dim=None,
+        num_candidates=5,
+        embedding_dim=64,
+    ):
+        super().__init__()
+        if candidate_feat_dim is None:
+            candidate_feat_dim = self.CANDIDATE_FEAT_DIM
+
+        self.num_candidates    = num_candidates
+        self.candidate_feat_dim = candidate_feat_dim
+
+        # ── encoders ──────────────────────────────────────────────────────────
+        self.p_gnn  = _MiniGAT(p_net_node_dim, embedding_dim, embedding_dim, edge_dim=p_net_edge_dim)
+        self.v_gnn  = _MiniGAT(v_net_node_dim, embedding_dim, embedding_dim, edge_dim=v_net_edge_dim)
+        self.p_pool = _GlobalPool(embedding_dim)
+        self.v_pool = _GlobalPool(embedding_dim)
+
+        context_dim = embedding_dim * 2
+        self.context_proj = nn.Sequential(
+            nn.Linear(context_dim, embedding_dim),
+            nn.LeakyReLU(),
+        )
+
+        # ── per-candidate scorer (shared weights across candidates) ───────────
+        scorer_in = embedding_dim + candidate_feat_dim
+        self.scorer = nn.Sequential(
+            nn.Linear(scorer_in, embedding_dim),
+            nn.LeakyReLU(),
+            nn.Linear(embedding_dim, 1),
+        )
+        for m in self.scorer:
+            if isinstance(m, nn.Linear):
+                nn.init.orthogonal_(m.weight)
+
+    def forward(self, p_net_batch, v_net_batch, candidate_feats):
+        """
+        Parameters
+        ──────────
+        p_net_batch     : PyG Batch of physical networks
+        v_net_batch     : PyG Batch of virtual networks
+        candidate_feats : FloatTensor [B, num_candidates, candidate_feat_dim]
+
+        Returns
+        ───────
+        logits : FloatTensor [B, num_candidates]
+        """
+        # [B, emb]
+        p_emb = self.p_pool(self.p_gnn(p_net_batch), p_net_batch.batch)
+        v_emb = self.v_pool(self.v_gnn(v_net_batch), v_net_batch.batch)
+        ctx   = self.context_proj(torch.cat([p_emb, v_emb], dim=-1))  # [B, emb]
+
+        # Expand context over candidates: [B, k, emb]
+        k   = candidate_feats.size(1)
+        ctx_exp = ctx.unsqueeze(1).expand(-1, k, -1)
+
+        # Score each candidate: [B, k, emb+feat] → [B, k, 1] → [B, k]
+        scorer_in = torch.cat([ctx_exp, candidate_feats], dim=-1)
+        logits    = self.scorer(scorer_in).squeeze(-1)
+        return logits
