@@ -58,7 +58,11 @@ class OnlineAgent(object):
                         # self.buffer.rewards = ((np.array(self.buffer.rewards) - self.running_stats.mean) / (np.sqrt(self.running_stats.var + 1e-9))).tolist()
                     self.buffer.compute_returns_and_advantages(last_value, gamma=self.gamma, gae_lambda=self.gae_lambda, method=self.compute_return_method)
                     loss = self.update()
-            print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, {self.running_stats.mean}-{np.sqrt(self.running_stats.var)}')
+            # print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, {self.running_stats.mean}-{np.sqrt(self.running_stats.var)}')
+            if hasattr(self, 'running_stats'):
+                print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, {self.running_stats.mean}-{np.sqrt(self.running_stats.var)}')
+            else:
+                print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info.get("total_r2c", info.get("r2c_ratio", 0)):1.4f}')
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.eval_interval == 0:
                 self.validate(env)
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.save_interval == 0:
@@ -618,7 +622,12 @@ class PPOSolver(RLSolver):
         batch_old_action_logprobs = torch.cat(self.buffer.logprobs, dim=0).to(self.device).detach()
         batch_rewards = torch.FloatTensor(self.buffer.rewards).to(self.device)
 
-        batch_returns = torch.FloatTensor(self.buffer.returns).to(self.device)
+        # batch_returns = torch.FloatTensor(self.buffer.returns).to(self.device)
+        batch_returns = torch.tensor(
+            [r.detach().item() if isinstance(r, torch.Tensor) else r for r in self.buffer.returns], 
+            dtype=torch.float32, 
+            device=self.device
+        )
 
         if self.norm_reward:
             batch_returns = (batch_returns - batch_returns.mean()) / (batch_returns.std() + 1e-9)
