@@ -291,14 +291,37 @@ class DeepEdgeFeatureGAT(nn.Module):
 
         self._init_parameters()
 
+    # def _init_parameters(self):
+    #     for layer_id in list(range(self.num_mid_layers)) + ['s', 'e']:
+    #         nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_src.weight)
+    #         nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_dst.weight)
+    #         if self.edge_dim is not None:
+    #             nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_edge.weight)
+    #         if layer_id not in ['s', 'e']:
+    #             nn.init.orthogonal_(getattr(self, f'weight_{layer_id}'))
+
     def _init_parameters(self):
         for layer_id in list(range(self.num_mid_layers)) + ['s', 'e']:
-            nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_src.weight)
-            nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_dst.weight)
-            if self.edge_dim is not None:
-                nn.init.orthogonal_(getattr(self, f'conv_{layer_id}').lin_edge.weight)
+            conv = getattr(self, f'conv_{layer_id}')
+            
+            # 1. Handle node feature transformations (Modern PyG uses .lin, older uses .lin_src/.lin_dst)
+            if getattr(conv, 'lin', None) is not None:
+                nn.init.orthogonal_(conv.lin.weight)
+            else:
+                if getattr(conv, 'lin_src', None) is not None:
+                    nn.init.orthogonal_(conv.lin_src.weight)
+                if getattr(conv, 'lin_dst', None) is not None:
+                    nn.init.orthogonal_(conv.lin_dst.weight)
+            
+            # 2. Handle edge feature transformations safely
+            if self.edge_dim is not None and getattr(conv, 'lin_edge', None) is not None:
+                nn.init.orthogonal_(conv.lin_edge.weight)
+            
+            # 3. Handle custom residual/aggregation weights
             if layer_id not in ['s', 'e']:
-                nn.init.orthogonal_(getattr(self, f'weight_{layer_id}'))
+                weight_tensor = getattr(self, f'weight_{layer_id}', None)
+                if weight_tensor is not None:
+                    nn.init.orthogonal_(weight_tensor)
 
     def forward(self, input):
         x, edge_index, edge_attr = input['x'], input['edge_index'], input.get('edge_attr', None)
