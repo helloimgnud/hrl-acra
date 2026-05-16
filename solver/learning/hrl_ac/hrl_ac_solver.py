@@ -31,6 +31,7 @@ class HrlAcSolver(OnlineAgent, PPOSolver):
         self.gae_lambda = 0.98
         self.norm_reward = True
         self.compute_return_method = 'gae'
+        self.coef_entropy_loss = 0.05
             
 
 def obs_as_tensor(obs, device):

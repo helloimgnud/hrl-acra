@@ -47,34 +47,35 @@ class OnlineEnv(SolutionStepRLEnv):
             
     def compute_reward(self, solution):
         r"""Calculate deserved reward according to the result of taking action."""
-        w_a = 1
+        revenue_benchmark = 100.0
+        w_a = 1.0
         w_b = solution['v_net_lifetime'] / self.v_net_simulator.v_sim_setting['lifetime']['scale']
-        revenue_benchmark = 100
+        weight = w_a + w_b
+
         if solution['result']:
             basic_reward = solution['v_net_revenue'] / revenue_benchmark
-            weight = w_a + w_b
             reward = weight * basic_reward * solution['v_net_r2c_ratio']
         elif (not solution['result']) and (not solution['early_rejection']):
-            basic_reward = self.v_net.total_resource_demand / revenue_benchmark
-            reward = - 0.01 * (self.v_net.num_nodes)
+            wasted_demand = self.v_net.total_resource_demand / revenue_benchmark
+            reward = -weight * wasted_demand * 0.5
         else:
-            reward = 0
+            reward = 0.0
+
         self.actual_cumulative_reward += reward
         self.v_net_reward += reward
         self.global_timestep_count += 1
         self.global_cumulative_reward += reward
-        average_reward = reward - self.global_cumulative_reward / self.global_timestep_count
+
+        running_mean = self.global_cumulative_reward / max(self.global_timestep_count, 1)
         self.extra_record_info.update({
             'actual_cumulative_reward': self.actual_cumulative_reward,
             'global_cumulative_reward': self.global_cumulative_reward,
-            'average_reward_benchmark': self.global_cumulative_reward / self.global_timestep_count,
+            'average_reward_benchmark': running_mean,
             'cumulative_reward': self.cumulative_reward,
-            'average_reward': average_reward,
             'actual_reward': reward,
         })
-        self.cumulative_reward += average_reward
-        # print(f'v_net_id: {self.v_net.id:4d}, actual_reward: {reward:+2.2f}, average_reward: {average_reward:+2.2f}, average_benchmark: {self.global_cumulative_reward / self.global_timestep_count:+2.2f}, ')
-        return average_reward
+        self.cumulative_reward += reward
+        return reward
 
     def step(self, action):
         if action:
