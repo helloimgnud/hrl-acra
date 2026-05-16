@@ -45,6 +45,8 @@ class OnlineAgent(object):
                 with torch.no_grad():
                     value = self.estimate_obs(tensor_obs)
                 next_obs, reward, done, info = env.step(action[0])
+                if info.get('result', False):
+                    success_count += 1
                 # print(f'reward: {reward:2.2f}, value: {value.item():2.2f}, action_prob: {action_logprob.exp().item():2.2f}')
                 self.buffer.add(obs, action, reward, done, action_logprob, value=value)
                 obs = next_obs
