@@ -1,0 +1,11 @@
+# settings/fast_hpso_setting.yaml
+num_particles: 20
+max_iteration: 30
+w_max: 0.9
+w_min: 0.5
+beta: 0.3
+gamma: 0.3
+T0: 100.0
+cooling_rate: 0.95
+shortest_method: 'k_shortest'
+k_shortest: 10

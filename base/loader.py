@@ -8,6 +8,9 @@ def load_simulator(solver_name):
         Env, Solver = SolutionStepEnvironment, GRCRankSolver
     elif solver_name == 'nrm_rank':
         Env, Solver = SolutionStepEnvironment, NRMRankSolver
+    elif solver_name == 'fast_hpso':
+        from solver.heuristic.fast_hpso import FastHPSOSolver
+        Env, Solver = SolutionStepEnvironment, FastHPSOSolver
     elif solver_name == 'pl_rank':
         Env, Solver = SolutionStepEnvironment, PLRankSolver
     elif solver_name == 'gae_vne':

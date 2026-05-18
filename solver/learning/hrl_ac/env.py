@@ -37,6 +37,9 @@ class OnlineEnv(SolutionStepRLEnv):
             else:
                 print('Randomly initialize the parameters of lower-level agent!')
             self.sub_solver.eval()
+        elif sub_solver_name == 'fast_hpso':
+            from solver.heuristic.fast_hpso import FastHPSOSolver
+            self.sub_solver = FastHPSOSolver(self.controller, self.recorder, self.counter, **kwargs_for_sub_solver)
         else:
             raise NotImplementedError(f'Please specify a available sub solver: not {sub_solver_name}!')
         self.global_timestep_count = 0

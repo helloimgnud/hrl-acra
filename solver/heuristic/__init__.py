@@ -1,4 +1,5 @@
 from .node_rank import NodeRankSolver, GRCRankSolver, OrderRankSolver, NRMRankSolver
+from .fast_hpso import FastHPSOSolver
 
 from base.environment import *
 from base.register import Register
@@ -9,6 +10,7 @@ __all__ = [
     GRCRankSolver, 
     OrderRankSolver, 
     NRMRankSolver,
+    FastHPSOSolver,
 ]
 
 Register.register('grc_rank', {'solver': GRCRankSolver, 'env': SolutionStepEnvironment})
