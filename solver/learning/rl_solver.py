@@ -39,6 +39,9 @@ class OnlineAgent(object):
         for epoch_id in range(start_epoch, start_epoch + num_epochs):
             obs = env.reset()
             success_count = 0
+            
+            pbar = tqdm.tqdm(desc=f'Training Epoch {epoch_id}', total=env.num_v_nets) if getattr(self, 'verbose', 1) <= 1 else None
+            
             for i in range(env.num_v_nets):
                 tensor_obs = self.preprocess_obs(obs, self.device)
                 action, action_logprob = self.select_action(tensor_obs, mask=None, sample=True)
@@ -47,6 +50,14 @@ class OnlineAgent(object):
                 next_obs, reward, done, info = env.step(action[0])
                 if info.get('result', False):
                     success_count += 1
+                
+                if pbar is not None:
+                    pbar.update(1)
+                    pbar.set_postfix({
+                        'succ': success_count,
+                        'r2c': f'{info.get("total_r2c", info.get("r2c_ratio", 0)):1.2f}'
+                    })
+
                 # print(f'reward: {reward:2.2f}, value: {value.item():2.2f}, action_prob: {action_logprob.exp().item():2.2f}')
                 self.buffer.add(obs, action, reward, done, action_logprob, value=value)
                 obs = next_obs
@@ -60,6 +71,10 @@ class OnlineAgent(object):
                         # self.buffer.rewards = ((np.array(self.buffer.rewards) - self.running_stats.mean) / (np.sqrt(self.running_stats.var + 1e-9))).tolist()
                     self.buffer.compute_returns_and_advantages(last_value, gamma=self.gamma, gae_lambda=self.gae_lambda, method=self.compute_return_method)
                     loss = self.update()
+                    
+            if pbar is not None:
+                pbar.close()
+                
             # print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, {self.running_stats.mean}-{np.sqrt(self.running_stats.var)}')
             if hasattr(self, 'running_stats'):
                 print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, {self.running_stats.mean}-{np.sqrt(self.running_stats.var)}')
