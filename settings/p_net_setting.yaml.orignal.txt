@@ -1,16 +1,16 @@
-# settings/p_net_setting.yaml
-num_nodes: 50    # <-- Reduced from 100 to 50 nodes
+num_nodes: 100
 save_dir: dataset/p_net
 topology:
+  # file_path: './dataset/topology/Brain.gml'
   type: waxman
-  wm_alpha: 0.4  # <-- Slightly reduced to decrease link density
-  wm_beta: 0.15  # <-- Slightly reduced to decrease link density
+  wm_alpha: 0.5
+  wm_beta: 0.2
 link_attrs_setting:
   - distribution: uniform
     dtype: int
     generative: true
-    high: 80     # <-- Reduced link capacity from 100 to 80
-    low: 40      # <-- Reduced link capacity from 50 to 40
+    high: 100
+    low: 50
     name: bw
     owner: link
     type: resource
@@ -23,11 +23,12 @@ node_attrs_setting:
     distribution: uniform
     dtype: int
     generative: true
-    high: 80     # <-- Reduced node capacity from 100 to 80
-    low: 40      # <-- Reduced node capacity from 50 to 40
+    high: 100
+    low: 50
     owner: node
     type: resource
   - name: max_cpu
     originator: cpu
     owner: node
     type: extrema
+file_name: p_net.gml

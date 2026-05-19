@@ -1,4 +1,3 @@
-# settings/v_sim_setting.yaml
 num_v_nets: 1000
 topology:
   random_prob: 0.5
@@ -11,7 +10,7 @@ v_net_size:
 arrival_rate:
   distribution: possion
   dtype: float
-  lam: 0.06     # <-- Changed from 0.04 to 0.06 (Average inter-arrival decreases to 16.6)
+  lam: 0.04
   reciprocal: true
 lifetime:
   distribution: exponential
@@ -22,7 +21,7 @@ node_attrs_setting:
     distribution: uniform
     dtype: int
     generative: true
-    low: 5       # <-- Raised minimum CPU request from 0 to 5
+    low: 0
     high: 50
     owner: node
     type: resource
@@ -31,7 +30,12 @@ link_attrs_setting:
     distribution: uniform
     dtype: int
     generative: true
-    low: 5       # <-- Raised minimum BW request from 0 to 5
+    low: 0
     high: 50
     owner: link
     type: resource
+save_dir: dataset/v_nets
+v_nets_file_name: v_net.gml
+v_nets_save_dir: v_nets
+events_file_name: events.yaml
+setting_file_name: v_sim_setting.yaml
