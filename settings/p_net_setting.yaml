@@ -31,3 +31,4 @@ node_attrs_setting:
     originator: cpu
     owner: node
     type: extrema
+file_name: p_net.gml

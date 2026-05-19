@@ -35,3 +35,8 @@ link_attrs_setting:
     high: 50
     owner: link
     type: resource
+save_dir: dataset/v_nets
+v_nets_file_name: v_net.gml
+v_nets_save_dir: v_nets
+events_file_name: events.yaml
+setting_file_name: v_sim_setting.yaml
