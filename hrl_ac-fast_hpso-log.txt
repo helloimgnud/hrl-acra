@@ -1,0 +1,443 @@
+
+--------------------    Start     --------------------
+
+Use hrl_ac Solver...
+
+2026-05-19 20:59:04.409627: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/attr_value.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/resource_handle.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_shape.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/types.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/full_type.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/function.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/node_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/op_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph_debug_info.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/versions.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at xla/tsl/protobuf/coordination_config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/cost_graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/step_stats.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/allocation_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/cluster.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/google/protobuf/runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/debug.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None
+*** Generate Physical Network from setting
+Create VNR Simulator from setting
+Employ fast_hpso as sub solver
+**************************************************
+Key parameters of RL training are as following: 
+**************************************************
+       device: Tesla T4
+     parallel: False
+     rl_gamma: 0.99
+     lr_actor: 0.001
+    lr_critic: 0.001
+   batch_size: 256
+embedding_dim: 128
+coef_ent_loss: 0.01
+     norm_adv: True
+  norm_reward: True
+    clip_grad: True
+max_grad_norm: 0.5
+**************************************************
+
+Logging training info at save/hrl_ac/4ea84cb403ae-20260519T205854/log/training_info.csv
+Save config in save/hrl_ac/4ea84cb403ae-20260519T205854/config.yaml
+Attempting to load the pretrained model
+Loaded pretrained model from save/hrl_ac/7772493c9ec3-20260518T162245/model/model-93.pkl
+
+--------------------  Pretrain  --------------------
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 0: 100% 999/1000 [06:57<00:00,  3.09it/s, succ=964, r2c=0.78]{'acceptance_rate': 0.965,
+ 'clock_running_time': 418.18974351882935,
+ 'cumulative_reward': 6407.890271119219,
+ 'early_rejection_count': 22,
+ 'long_term_aver_cost': 32.090198286107466,
+ 'long_term_aver_revenue': 25.177394132732847,
+ 'long_term_aver_time_revenue': 25595.8731386849,
+ 'long_term_weighted_revenue': 50.77326727141775,
+ 'max_inservice_count': 73,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7845820679653662,
+ 'route_failure_count': 13,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T205909',
+ 'success_count': 965,
+ 'time_r2c_ratio': 0.7830023387085476,
+ 'total_cost': 513026,
+ 'total_revenue': 402511,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 522605366.087508,
+ 'total_time_revenue': 409201223.8681555,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T205909.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 0: 100% 1000/1000 [06:58<00:00,  2.05it/s, succ=965, r2c=0.78]Update time: 000039 | +0.6369 & -0.0008 & +1.2785 & +0.0314 & -0.0457 & -0.0446 & -0.0311
+Training Epoch 0: 100% 1000/1000 [07:07<00:00,  2.34it/s, succ=965, r2c=0.78]
+
+epoch    0, success_count   965, r2c 0.7846
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-0.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 1: 100% 999/1000 [06:53<00:00,  1.82it/s, succ=969, r2c=0.78]{'acceptance_rate': 0.97,
+ 'clock_running_time': 414.6764647960663,
+ 'cumulative_reward': 6444.839993672344,
+ 'early_rejection_count': 21,
+ 'long_term_aver_cost': 32.58159754800776,
+ 'long_term_aver_revenue': 25.407518608869708,
+ 'long_term_aver_time_revenue': 25770.513387552517,
+ 'long_term_weighted_revenue': 51.17803199642223,
+ 'max_inservice_count': 73,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7798119343728522,
+ 'route_failure_count': 9,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T210617',
+ 'success_count': 970,
+ 'time_r2c_ratio': 0.7816377615584317,
+ 'total_cost': 520882,
+ 'total_revenue': 406190,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 527089679.88620305,
+ 'total_time_revenue': 411993197.52680206,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T210617.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 1: 100% 1000/1000 [06:54<00:00,  1.42it/s, succ=970, r2c=0.78]Update time: 000079 | +0.2653 & -0.0020 & +0.5382 & +0.0360 & -0.0455 & -0.0415 & -0.0262
+Training Epoch 1: 100% 1000/1000 [07:02<00:00,  2.37it/s, succ=970, r2c=0.78]
+
+epoch    1, success_count   970, r2c 0.7798
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-1.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 2: 100% 999/1000 [07:00<00:00,  1.86it/s, succ=972, r2c=0.78]{'acceptance_rate': 0.973,
+ 'clock_running_time': 421.90964102745056,
+ 'cumulative_reward': 6394.353192265299,
+ 'early_rejection_count': 12,
+ 'long_term_aver_cost': 32.823794332895474,
+ 'long_term_aver_revenue': 25.553387127040722,
+ 'long_term_aver_time_revenue': 25711.31296227598,
+ 'long_term_weighted_revenue': 51.264700089316705,
+ 'max_inservice_count': 72,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7785019266170434,
+ 'route_failure_count': 15,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T211319',
+ 'success_count': 973,
+ 'time_r2c_ratio': 0.7789045675276585,
+ 'total_cost': 524754,
+ 'total_revenue': 408522,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 527724162.19437575,
+ 'total_time_revenue': 411046760.32790613,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T211319.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 2: 100% 1000/1000 [07:02<00:00,  1.26it/s, succ=973, r2c=0.78]Update time: 000119 | +0.3029 & +0.0005 & +0.6068 & +0.0186 & -0.0107 & -0.0129 & +0.0779
+Training Epoch 2: 100% 1000/1000 [07:10<00:00,  2.32it/s, succ=973, r2c=0.78]
+
+epoch    2, success_count   973, r2c 0.7785
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-2.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 3: 100% 999/1000 [07:07<00:00,  2.88it/s, succ=975, r2c=0.77]{'acceptance_rate': 0.976,
+ 'clock_running_time': 428.18514943122864,
+ 'cumulative_reward': 6380.015874051622,
+ 'early_rejection_count': 11,
+ 'long_term_aver_cost': 32.942015387502344,
+ 'long_term_aver_revenue': 25.432038531306688,
+ 'long_term_aver_time_revenue': 25791.258281898074,
+ 'long_term_weighted_revenue': 51.22329681320476,
+ 'max_inservice_count': 72,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7720243656056084,
+ 'route_failure_count': 13,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T212030',
+ 'success_count': 976,
+ 'time_r2c_ratio': 0.7739865261376917,
+ 'total_cost': 526644,
+ 'total_revenue': 406582,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 532728713.26361066,
+ 'total_time_revenue': 412324846.1527045,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T212030.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 3: 100% 1000/1000 [07:08<00:00,  1.92it/s, succ=976, r2c=0.77]Update time: 000159 | +0.3894 & +0.0001 & +0.7804 & +0.0167 & -0.0199 & -0.0200 & -0.0209
+Training Epoch 3: 100% 1000/1000 [07:16<00:00,  2.29it/s, succ=976, r2c=0.77]
+
+epoch    3, success_count   976, r2c 0.7720
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-3.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 4: 100% 999/1000 [07:04<00:00,  2.93it/s, succ=971, r2c=0.76]{'acceptance_rate': 0.972,
+ 'clock_running_time': 425.1264362335205,
+ 'cumulative_reward': 6128.4472545786,
+ 'early_rejection_count': 11,
+ 'long_term_aver_cost': 33.53981359854882,
+ 'long_term_aver_revenue': 25.334897103896918,
+ 'long_term_aver_time_revenue': 25392.70101679454,
+ 'long_term_weighted_revenue': 50.727598120691454,
+ 'max_inservice_count': 72,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7553678564568138,
+ 'route_failure_count': 17,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T212747',
+ 'success_count': 972,
+ 'time_r2c_ratio': 0.7575127826509735,
+ 'total_cost': 536201,
+ 'total_revenue': 405029,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 535902654.65201867,
+ 'total_time_revenue': 405953111.15549433,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T212747.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 4: 100% 1000/1000 [07:05<00:00,  2.02it/s, succ=972, r2c=0.76]Update time: 000199 | +0.2306 & +0.0006 & +0.4625 & +0.0246 & -0.0155 & -0.0149 & -0.0203
+Training Epoch 4: 100% 1000/1000 [07:13<00:00,  2.31it/s, succ=972, r2c=0.76]
+
+epoch    4, success_count   972, r2c 0.7554
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-4.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 5: 100% 999/1000 [06:52<00:00,  1.83it/s, succ=977, r2c=0.80]{'acceptance_rate': 0.978,
+ 'clock_running_time': 413.28620052337646,
+ 'cumulative_reward': 6646.632756116837,
+ 'early_rejection_count': 11,
+ 'long_term_aver_cost': 32.048351785825986,
+ 'long_term_aver_revenue': 25.597485456933757,
+ 'long_term_aver_time_revenue': 26045.643369605386,
+ 'long_term_weighted_revenue': 51.64312882653914,
+ 'max_inservice_count': 73,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7987145681624336,
+ 'route_failure_count': 11,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T213501',
+ 'success_count': 978,
+ 'time_r2c_ratio': 0.8005710893732215,
+ 'total_cost': 512357,
+ 'total_revenue': 409227,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 520118333.1212726,
+ 'total_time_revenue': 416391700.54988134,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T213501.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 5: 100% 1000/1000 [06:53<00:00,  1.47it/s, succ=978, r2c=0.80]Update time: 000239 | +0.2676 & -0.0004 & +0.5414 & +0.0542 & -0.0249 & -0.0212 & -0.0503
+Training Epoch 5: 100% 1000/1000 [07:01<00:00,  2.37it/s, succ=978, r2c=0.80]
+
+epoch    5, success_count   978, r2c 0.7987
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-5.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 6: 100% 999/1000 [06:51<00:00,  2.98it/s, succ=974, r2c=0.77]{'acceptance_rate': 0.975,
+ 'clock_running_time': 412.61068773269653,
+ 'cumulative_reward': 6393.203955614515,
+ 'early_rejection_count': 20,
+ 'long_term_aver_cost': 33.14761994120223,
+ 'long_term_aver_revenue': 25.50866328892225,
+ 'long_term_aver_time_revenue': 25798.2351686153,
+ 'long_term_weighted_revenue': 51.30689845753756,
+ 'max_inservice_count': 72,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7695473561652366,
+ 'route_failure_count': 5,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T214202',
+ 'success_count': 975,
+ 'time_r2c_ratio': 0.771415404532992,
+ 'total_cost': 529931,
+ 'total_revenue': 407807,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 534648884.6568188,
+ 'total_time_revenue': 412436385.64065284,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T214202.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 6: 100% 1000/1000 [06:52<00:00,  1.96it/s, succ=975, r2c=0.77]Update time: 000279 | +0.1328 & -0.0006 & +0.2698 & +0.0298 & -0.0289 & -0.0285 & +0.0355
+Training Epoch 6: 100% 1000/1000 [07:01<00:00,  2.37it/s, succ=975, r2c=0.77]
+
+epoch    6, success_count   975, r2c 0.7695
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-6.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 7: 100% 999/1000 [06:57<00:00,  2.94it/s, succ=980, r2c=0.77]{'acceptance_rate': 0.981,
+ 'clock_running_time': 418.0071575641632,
+ 'cumulative_reward': 6417.12534493999,
+ 'early_rejection_count': 7,
+ 'long_term_aver_cost': 33.46393945080378,
+ 'long_term_aver_revenue': 25.693626071182837,
+ 'long_term_aver_time_revenue': 26106.953187499315,
+ 'long_term_weighted_revenue': 51.80057925868215,
+ 'max_inservice_count': 73,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7678003992612918,
+ 'route_failure_count': 12,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T214904',
+ 'success_count': 981,
+ 'time_r2c_ratio': 0.7683243223870605,
+ 'total_cost': 534988,
+ 'total_revenue': 410764,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 543223543.0369353,
+ 'total_time_revenue': 417371860.60855156,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T214904.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 7: 100% 1000/1000 [06:58<00:00,  2.01it/s, succ=981, r2c=0.77]Update time: 000319 | +0.1323 & -0.0014 & +0.2705 & +0.0318 & -0.0255 & -0.0286 & +0.0889
+Training Epoch 7: 100% 1000/1000 [07:06<00:00,  2.34it/s, succ=981, r2c=0.77]
+
+epoch    7, success_count   981, r2c 0.7678
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-7.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 8: 100% 999/1000 [06:52<00:00,  2.90it/s, succ=971, r2c=0.77]{'acceptance_rate': 0.972,
+ 'clock_running_time': 413.42866373062134,
+ 'cumulative_reward': 6364.993565392129,
+ 'early_rejection_count': 18,
+ 'long_term_aver_cost': 32.881028335522615,
+ 'long_term_aver_revenue': 25.42290611121536,
+ 'long_term_aver_time_revenue': 25772.013026956884,
+ 'long_term_weighted_revenue': 51.194919138172246,
+ 'max_inservice_count': 73,
+ 'min_p_net_available_resource': 7962,
+ 'min_p_net_link_available_resource': 4960,
+ 'min_p_net_node_available_resource': 3002,
+ 'p_net_dataset_dir': 'dataset/p_net/50-waxman_[0.4-0.15]-cpu_[40-80]-max_cpu_None-bw_[40-80]-max_bw_None',
+ 'place_failure_count': 0,
+ 'r2c_ratio': 0.7731785591313165,
+ 'route_failure_count': 10,
+ 'run_id': '4ea84cb403ae-20260519T205854',
+ 'seed': 0,
+ 'solver_name': 'hrl_ac',
+ 'start_run_time': '20260519T215611',
+ 'success_count': 972,
+ 'time_r2c_ratio': 0.7737174132901756,
+ 'total_cost': 525669,
+ 'total_revenue': 406436,
+ 'total_simulation_time': 15987.0,
+ 'total_time_cost': 532516349.2312876,
+ 'total_time_revenue': 412017172.2619597,
+ 'v_nets_dataset_dir': 'dataset/v_nets/1000-[2-10]-random-1000-0.06-cpu_[5-50]-bw_[5-50]'}
+save records to save/hrl_ac/4ea84cb403ae-20260519T205854/records/hrl_ac-4ea84cb403ae-20260519T205854-20260519T215611.csv
+save summary to save/fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training.csv
+Training Epoch 8: 100% 1000/1000 [06:53<00:00,  1.97it/s, succ=972, r2c=0.77]Update time: 000359 | +0.2553 & -0.0001 & +0.5186 & +0.0779 & -0.0370 & -0.0298 & -0.0045
+Training Epoch 8: 100% 1000/1000 [07:00<00:00,  2.38it/s, succ=972, r2c=0.77]
+
+epoch    8, success_count   972, r2c 0.7732
+Save model to save/hrl_ac/4ea84cb403ae-20260519T205854/model/model-8.pkl
+
+temp save record in save/hrl_ac/4ea84cb403ae-20260519T205854/records/temp-0.csv
+
+
+*** Generate virtual networks with seed 0
+Training Epoch 9:  11% 111/1000 [00:37<04:52,  3.04it/s, succ=87, r2c=0.77]

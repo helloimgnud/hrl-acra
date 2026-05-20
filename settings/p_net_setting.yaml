@@ -1,5 +1,5 @@
 # settings/p_net_setting.yaml
-num_nodes: 50    # <-- Reduced from 100 to 50 nodes
+num_nodes: 100
 save_dir: dataset/p_net
 topology:
   type: waxman
