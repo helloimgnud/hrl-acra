@@ -83,7 +83,7 @@ class OnlineAgent(object):
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.eval_interval == 0:
                 self.validate(env)
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.save_interval == 0:
-                self.save_model(f'model-{epoch_id}.pkl')
+                self.save_model(f'model-{epoch_id}.pkl', epoch=epoch_id)
 
     def validate(self, env, checkpoint_path=None):
         print(f"\n{'-' * 20}  Validate  {'-' * 20}\n") if self.verbose >= 0 else None
@@ -239,7 +239,7 @@ class InstanceAgent(object):
             print(f'\nepoch {epoch_id:4d}, success_count {success_count:5d}, r2c {info["total_r2c"]:1.4f}, mean logprob {epoch_logprobs_tensor.mean():2.4f}')
             # save
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.save_interval == 0:
-                self.save_model(f'model-{epoch_id}.pkl')
+                self.save_model(f'model-{epoch_id}.pkl', epoch=epoch_id)
             # validate
             if (epoch_id + 1) != (start_epoch + num_epochs) and (epoch_id + 1) % self.eval_interval == 0:
                 self.validate(env)
@@ -455,28 +455,46 @@ class RLSolver(Solver):
     def estimate_obs(self, observation):
         return self.policy.evaluate(observation).squeeze(-1)
 
-    def save_model(self, checkpoint_fname):
+    def save_model(self, checkpoint_fname, epoch=None):
         checkpoint_fname = os.path.join(self.model_dir, checkpoint_fname)
-        # torch.save(self.policy.state_dict(), checkpoint_fname)
         torch.save({
             'policy': self.policy.state_dict(),
             'optimizer': self.optimizer.state_dict(),
-            # 'lr_scheduler_state_dict': self.lr_scheduler.state_dict()
+            'epoch': epoch,
+            'running_stats': {
+                'mean': self.running_stats.mean,
+                'var': self.running_stats.var,
+                'count': self.running_stats.count,
+            } if hasattr(self, 'running_stats') else None,
         }, checkpoint_fname)
         print(f'Save model to {checkpoint_fname}\n') if self.verbose >= 0 else None
 
     def load_model(self, checkpoint_path):
         print('Attempting to load the pretrained model')
+        start_epoch = 0
         try:
-            checkpoint = torch.load(checkpoint_path)
+            checkpoint = torch.load(checkpoint_path, map_location=self.device)
             if 'policy' not in checkpoint:
-                self.policy.load_state_dict(torch.load(checkpoint_path, map_location=lambda storage, loc: storage))
+                self.policy.load_state_dict(checkpoint)
             else:
                 self.policy.load_state_dict(checkpoint['policy'])
                 self.optimizer.load_state_dict(checkpoint['optimizer'])
-            print(f'Loaded pretrained model from {checkpoint_path}') if self.verbose >= 0 else None
+                # Move optimizer state tensors to correct device
+                for state in self.optimizer.state.values():
+                    for k, v in state.items():
+                        if isinstance(v, torch.Tensor):
+                            state[k] = v.to(self.device)
+                if checkpoint.get('epoch') is not None:
+                    start_epoch = checkpoint['epoch'] + 1
+                if checkpoint.get('running_stats') is not None and hasattr(self, 'running_stats'):
+                    rs = checkpoint['running_stats']
+                    self.running_stats.mean  = rs['mean']
+                    self.running_stats.var   = rs['var']
+                    self.running_stats.count = rs['count']
+            print(f'Loaded pretrained model from {checkpoint_path}, resuming from epoch {start_epoch}') if self.verbose >= 0 else None
         except Exception as e:
-            print(f'Load failed from {checkpoint_path}\nInitilized with random parameters') if self.verbose >= 0 else None
+            print(f'Load failed: {e}\nInitialized with random parameters') if self.verbose >= 0 else None
+        return start_epoch
 
     def train(self):
         """Set the mode to train"""

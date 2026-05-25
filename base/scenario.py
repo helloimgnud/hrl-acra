@@ -62,15 +62,16 @@ class Scenario:
 
     def ready(self):
         # load pretrained model
+        start_epoch = 0
         if hasattr(self.solver, 'load_model') and self.config.pretrained_model_path not in ['None', '']:
             if os.path.exists(self.config.pretrained_model_path):
-                self.solver.load_model(self.config.pretrained_model_path)
+                start_epoch = self.solver.load_model(self.config.pretrained_model_path)
             else:
                 print(f'Load pretrained model failed: Path does not exist {self.config.pretrained_model_path}')
         # execute pretrain
         if hasattr(self.solver, 'learn') and self.config.num_train_epochs > 0:
             print(f"\n{'-' * 20}  Pretrain  {'-' * 20}\n")
-            self.solver.learn(self.env, num_epochs=self.config.num_train_epochs)
+            self.solver.learn(self.env, num_epochs=self.config.num_train_epochs, start_epoch=start_epoch)
             print(f"\n{'-' * 20}    Done    {'-' * 20}\n")
         # set eval mode
         if hasattr(self.solver, 'eval'):
