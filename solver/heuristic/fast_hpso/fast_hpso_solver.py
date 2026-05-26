@@ -35,6 +35,7 @@ class FastHPSOSolver(NodeRankSolver):
 
     def __init__(self, controller, recorder, counter, **kwargs):
         super(FastHPSOSolver, self).__init__(controller, recorder, counter, **kwargs)
+        self.is_sub_solver = (kwargs.get('solver_name') != 'fast_hpso')
         # HPSO hyper-parameters
         self.num_particles = kwargs.get('num_particles', 20)
         self.max_iteration = kwargs.get('max_iteration', 30)
@@ -50,6 +51,12 @@ class FastHPSOSolver(NodeRankSolver):
         # WHY: avoid hard-coding 'cpu'/'bw'; works with any attribute config
         self._node_res_attrs = [a.name for a in self.controller.node_resource_attrs]
         self._link_res_attrs = [a.name for a in self.controller.link_resource_attrs]
+
+    def solve(self, instance):
+        solution = super(FastHPSOSolver, self).solve(instance)
+        if solution['result'] and getattr(self, 'is_sub_solver', False):
+            self.controller.deploy(instance['v_net'], instance['p_net'], solution)
+        return solution
 
     # ─────────────────────────────────────────────────────────────────────────
     # Core override: replace greedy node ranking with HPSO search
