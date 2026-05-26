@@ -27,7 +27,7 @@ class HrlAcSolver(OnlineAgent, PPOSolver):
             ],
         )
         self.preprocess_obs = obs_as_tensor
-        self.gamma = 1.
+        self.gamma = 0.99
         self.gae_lambda = 0.98
         self.norm_reward = True
         self.compute_return_method = 'gae'
