@@ -53,7 +53,7 @@ num_v_net_link_attrs: 1
 num_v_net_node_attrs: 1
 num_workers: 10
 open_tb: true
-p_net_dataset_dir: dataset/p_net/100-waxman_[0.5-0.2]-cpu_[50-100]-max_cpu_None-bw_[50-100]-max_bw_None
+# p_net_dataset_dir: dataset/p_net/100-waxman_[0.5-0.2]-cpu_[50-100]-max_cpu_None-bw_[50-100]-max_bw_None
 p_net_setting:
   file_name: p_net.gml
   link_attrs_setting:
