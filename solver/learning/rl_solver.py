@@ -39,6 +39,10 @@ class OnlineAgent(object):
         for epoch_id in range(start_epoch, start_epoch + num_epochs):
             obs = env.reset()
             success_count = 0
+            self.epoch_success_count = 0
+            self.epoch_early_reject_count = 0
+            self.epoch_failure_count = 0
+            self.epoch_reward = 0.0
             
             pbar = tqdm.tqdm(desc=f'Training Epoch {epoch_id}', total=env.num_v_nets) if getattr(self, 'verbose', 1) <= 1 else None
             
@@ -48,17 +52,26 @@ class OnlineAgent(object):
                 with torch.no_grad():
                     value = self.estimate_obs(tensor_obs)
                 next_obs, reward, done, info = env.step(action[0])
+                self.epoch_reward += reward
                 if info.get('result', False):
                     success_count += 1
+                    self.epoch_success_count += 1
+                elif info.get('early_rejection', False):
+                    self.epoch_early_reject_count += 1
+                else:
+                    self.epoch_failure_count += 1
                 
                 if pbar is not None:
                     pbar.update(1)
                     pbar.set_postfix({
-                        'succ': success_count,
+                        'succ': self.epoch_success_count,
+                        'rej': self.epoch_early_reject_count,
+                        'fail': self.epoch_failure_count,
+                        'rew': f'{self.epoch_reward:.1f}',
                         'r2c': f'{info.get("total_r2c", info.get("r2c_ratio", 0)):1.2f}'
                     })
 
-                # print(f'reward: {reward:2.2f}, value: {value.item():2.2f}, action_prob: {action_logprob.exp().item():2.2f}')
+                print(f'reward: {reward:2.2f}, value: {value.item():2.2f}, action_prob: {action_logprob.exp().item():2.2f}')
                 self.buffer.add(obs, action, reward, done, action_logprob, value=value)
                 obs = next_obs
                 self.time_step += 1
@@ -358,6 +371,14 @@ class RLSolver(Solver):
         return solution_info
 
     def log(self, info, update_time, only_tb=False):
+        if hasattr(self, 'epoch_reward'):
+            info = {
+                **info,
+                'epoch/reward': self.epoch_reward,
+                'epoch/success_count': self.epoch_success_count,
+                'epoch/early_reject_count': self.epoch_early_reject_count,
+                'epoch/failure_count': self.epoch_failure_count,
+            }
         if self.open_tb:
             for key, value in info.items():
                 self.writer.add_scalar(key, value, update_time)
@@ -719,7 +740,7 @@ class PPOSolver(RLSolver):
                     'value/reward': batch_rewards.mean().cpu().numpy(),
                     'grad/grad_clipped': grad_clipped.detach().cpu().numpy()
                 }
-                only_tb = not (i == sample_times-1)
+                only_tb = False
                 self.log(info, self.update_time, only_tb=only_tb)
 
             self.update_time += 1
@@ -805,7 +826,7 @@ class ARPPOSolver(RLSolver):
                     'value/reward': batch_rewards.mean().cpu().numpy(),
                     'grad/grad_clipped': grad_clipped.detach().cpu().numpy()
                 }
-                only_tb = not (i == sample_times-1)
+                only_tb = False
                 self.log(info, self.update_time, only_tb=only_tb)
 
             self.update_time += 1
