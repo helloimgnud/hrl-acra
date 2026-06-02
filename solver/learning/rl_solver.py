@@ -37,7 +37,7 @@ class OnlineAgent(object):
     def learn(self, env, num_epochs=1, start_epoch=0, save_timestep=1000, config=None, **kwargs):
         # main env
         for epoch_id in range(start_epoch, start_epoch + num_epochs):
-            obs = env.reset()
+            obs = env.reset(epoch_id=epoch_id)
             success_count = 0
             self.epoch_success_count = 0
             self.epoch_early_reject_count = 0
@@ -226,7 +226,7 @@ class InstanceAgent(object):
         self.start_time = time.time()
         for epoch_id in range(start_epoch, start_epoch + num_epochs):
             print(f'Training Epoch: {epoch_id}')
-            instance = env.reset()
+            instance = env.reset(epoch_id=epoch_id)
             success_count = 0
             epoch_logprobs = []
             revenue2cost_list = []

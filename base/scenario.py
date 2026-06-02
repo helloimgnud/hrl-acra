@@ -87,7 +87,7 @@ class BasicScenario(Scenario):
 
         for epoch_id in range(self.config.start_epoch, self.config.start_epoch + self.config.num_epochs):
             print(f'\nEpoch {epoch_id}') if self.verbose >= 2 else None
-            instance = self.env.reset()
+            instance = self.env.reset(epoch_id=epoch_id)
 
             pbar = tqdm.tqdm(desc=f'Running with {self.config.solver_name} in epoch {epoch_id}', total=self.env.num_v_nets) if self.verbose <= 1 else None
 
@@ -148,7 +148,7 @@ class TimeWindowScenario(Scenario):
         for epoch_id in range(self.config.start_epoch, self.config.start_epoch + self.config.num_epochs):
             print(f'\nEpoch {epoch_id}') if self.verbose >= 2 else None
             pbar = tqdm.tqdm(desc=f'Running with {self.solver.name} in epoch {epoch_id}', total=self.env.num_v_nets) if self.verbose <= 1 else None
-            instance = self.env.reset()
+            instance = self.env.reset(epoch_id=epoch_id)
 
             current_event_id = 0
             events_list = self.env.v_net_simulator.events
