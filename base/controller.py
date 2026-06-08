@@ -485,12 +485,11 @@ class Controller:
 
     def create_available_network(self, v_net, p_net, v_link_pair):
         def available_link(n1, n2):
-            p_link = p_net.links[(n1, n2)]
-            result, info = self.check_link_constraints(v_net, p_net, v_link, p_link)
+            result, info = self.check_link_constraints(v_net, p_net, v_link_pair, (n1, n2))
             return result
-        v_link = v_net.links[v_link_pair]
         sub_graph = nx.subgraph_view(p_net, filter_edge=available_link)
         return sub_graph
+
 
     def create_pruned_network(self, v_net, p_net, v_link_pair, ratio=1., div=0.):
         """

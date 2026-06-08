@@ -36,6 +36,8 @@ data_arg.add_argument('--v_sim_setting_aver_lifetime', type=int, default=1000, h
 data_arg.add_argument('--v_sim_setting_high_request', type=int, default=30, help='')
 data_arg.add_argument('--v_sim_setting_low_request', type=int, default=0, help='')
 data_arg.add_argument('--v_sim_setting_num_v_nets', type=int, default=1000, help='')
+data_arg.add_argument('--v_sim_setting_save_dir', type=str, default=None, help='Override save/load directory for virtual network requests')
+data_arg.add_argument('--p_net_setting_save_dir', type=str, default=None, help='Override save/load directory for physical networks')
 
 ### Environment ###
 env_arg = parser.add_argument_group('env')
@@ -119,6 +121,7 @@ run_arg = parser.add_argument_group('run')
 # run_arg.add_argument('--if_save_config', type=str2bool, default=True, help='Whether to save config')
 # run_arg.add_argument('--only_test', type=str2bool, default=False, help='Only test without training')
 run_arg.add_argument('--renew_v_net_simulator', type=str2bool, default=False, help='')
+run_arg.add_argument('--renew_p_net_simulator', type=str2bool, default=False, help='')
 run_arg.add_argument('--start_epoch', type=int, default=0, help='Start from epochi')
 run_arg.add_argument('--num_epochs', type=int, default=1, help='Number of epochs')
 run_arg.add_argument('--seed', type=int, default=None, help='Random seed')
@@ -171,10 +174,19 @@ def get_config(args=None, adjust_p_net_setting={}, adjust_v_sim_setting={}):
     config.p_net_setting.update(adjust_p_net_setting)
     config.v_sim_setting.update(adjust_v_sim_setting)
 
+    if config.p_net_setting_save_dir is not None:
+        config.p_net_setting['save_dir'] = config.p_net_setting_save_dir
+    if config.v_sim_setting_save_dir is not None:
+        config.v_sim_setting['save_dir'] = config.v_sim_setting_save_dir
+
     if config.if_adjust_v_sim_setting:
         config.v_sim_setting['max_length'] = config.v_sim_setting_max_length
         config.v_sim_setting['aver_arrival_rate'] = config.v_sim_setting_aver_arrival_rate
+        if 'arrival_rate' in config.v_sim_setting:
+            config.v_sim_setting['arrival_rate']['lam'] = config.v_sim_setting_aver_arrival_rate
         config.v_sim_setting['aver_lifetime'] = config.v_sim_setting_aver_lifetime
+        if 'lifetime' in config.v_sim_setting:
+            config.v_sim_setting['lifetime']['scale'] = config.v_sim_setting_aver_lifetime
         for n_attr in config.v_sim_setting['node_attrs_setting']: n_attr['high'] = config.v_sim_setting_high_request
         for l_attr in config.v_sim_setting['link_attrs_setting']: l_attr['high'] = config.v_sim_setting_high_request
         for n_attr in config.v_sim_setting['node_attrs_setting']: n_attr['low'] = config.v_sim_setting_low_request

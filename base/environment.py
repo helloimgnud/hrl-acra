@@ -25,6 +25,7 @@ class Environment:
         self.p_net_dataset_dir = kwargs.get('p_net_dataset_dir', 'unknown_p_net_dataset_dir')
         self.v_nets_dataset_dir = kwargs.get('v_nets_dataset_dir', 'unknown_v_nets_dataset_dir')
         self.renew_v_net_simulator = kwargs.get('renew_v_net_simulator', False)
+        self.renew_p_net_simulator = kwargs.get('renew_p_net_simulator', False)
         self.p_net_setting = kwargs.get('p_net_setting', None)
 
         self.solver_name = kwargs.get('solver_name', 'unknown_slover')
@@ -90,8 +91,8 @@ class Environment:
         if epoch_id is not None and seed is not None:
             seed = seed + epoch_id
 
-        # Substrate Variation: regenerate the physical network if epoch_id is provided
-        if epoch_id is not None and getattr(self, 'p_net_setting', None) is not None:
+        # Substrate Variation: regenerate the physical network if epoch_id is provided and renew_p_net_simulator is True
+        if self.renew_p_net_simulator and epoch_id is not None and getattr(self, 'p_net_setting', None) is not None:
             p_net_seed = seed
             self.init_p_net = PhysicalNetwork.from_setting(self.p_net_setting, seed=p_net_seed)
             print(f'*** Regenerate Physical Network with seed {p_net_seed}') if self.verbose >= 1 else None
@@ -103,7 +104,7 @@ class Environment:
             print(f'temp save record in {self.recorder.temp_save_path}\n')
 
         self.v_nets_dataset_dir = get_v_nets_dataset_dir_from_setting(self.v_net_simulator.v_sim_setting)
-        if self.renew_v_net_simulator or epoch_id is not None:
+        if self.renew_v_net_simulator:
             self.v_net_simulator.renew(v_nets=True, events=True, seed=seed)
             print(f'Generate virtual networks with seed {seed}') if self.verbose >= 1 else None
         elif os.path.exists(self.v_nets_dataset_dir):

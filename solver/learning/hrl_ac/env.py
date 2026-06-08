@@ -62,7 +62,9 @@ class OnlineEnv(SolutionStepRLEnv):
             wasted_demand = self.v_net.total_resource_demand / revenue_benchmark
             reward = -weight * wasted_demand * 0.5
         else:
-            reward = 0.0
+            wasted_demand = self.v_net.total_resource_demand / revenue_benchmark
+            reward = -weight * wasted_demand * 0.2
+            
 
         self.actual_cumulative_reward += reward
         self.v_net_reward += reward

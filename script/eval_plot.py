@@ -60,7 +60,6 @@ def main():
             continue
             
         print(f"Processing file: {file_path}")
-        
         try:
             # Read CSV
             df = pd.read_csv(file_path)
@@ -71,21 +70,26 @@ def main():
             if missing:
                 print(f"Error: File {file_path} is missing required columns: {missing}")
                 continue
-                
-            # Calculate total_ac = success_count / v_net_count
+
+            # Filter to keep only request arrival (Enter) events if 'event_type' is present
+            if 'event_type' in df.columns:
+                df_arrivals = df[df['event_type'] == 1]
+            else:
+                df_arrivals = df
+
+            # Calculate RAC = (success_count / v_net_count) * 100
             # Handle division by zero safely
-            total_ac = df['success_count'] / df['v_net_count'].replace(0, 1)
+            total_ac = (df_arrivals['success_count'] / df_arrivals['v_net_count'].replace(0, 1)) * 100
             total_ac = total_ac.fillna(0)
             
-            total_r2c = df['total_r2c'].fillna(0)
+            total_r2c = df_arrivals['total_r2c'].fillna(0)
             
             # Legend label is the filename (basename)
             label = os.path.basename(file_path)
             color = colors[i % len(colors)]
             
-            # X-axis is the experiment time unit (1 row is 1 time unit)
-            # We use 1-based index for time units
-            x = range(1, len(df) + 1)
+            # X-axis is the arriving requests sequence
+            x = range(1, len(df_arrivals) + 1)
             
             # Plot Total AC
             ax1.plot(x, total_ac, label=label, color=color, linewidth=1.8, alpha=0.9)
@@ -94,23 +98,23 @@ def main():
             ax2.plot(x, total_r2c, label=label, color=color, linewidth=1.8, alpha=0.9)
             
             # Print basic stats for convenience
-            if len(df) > 0:
-                print(f"  -> File: {label} | Total Rows: {len(df)}")
-                print(f"     Final Total AC: {total_ac.iloc[-1]:.4f} | Max Total AC: {total_ac.max():.4f}")
+            if len(df_arrivals) > 0:
+                print(f"  -> File: {label} | Total Arrivals: {len(df_arrivals)}")
+                print(f"     Final RAC: {total_ac.iloc[-1]:.2f}% | Max RAC: {total_ac.max():.2f}%")
                 print(f"     Final Total R2C: {total_r2c.iloc[-1]:.4f} | Max Total R2C: {total_r2c.max():.4f}")
                 
         except Exception as e:
             print(f"Error reading or plotting {file_path}: {e}")
             continue
 
-    # Style Subplot 1: Total AC
-    ax1.set_ylabel("Total AC (success_count / v_net_count)", fontsize=11, fontweight='semibold')
-    ax1.set_title("Evaluation Results: Total AC over Time", fontsize=13, fontweight='bold', pad=10)
+    # Style Subplot 1: RAC
+    ax1.set_ylabel("Request Acceptance Rate (RAC) %", fontsize=11, fontweight='semibold')
+    ax1.set_title("Evaluation Results: RAC over Time", fontsize=13, fontweight='bold', pad=10)
     ax1.legend(loc="best", frameon=True, shadow=False, facecolor='white', edgecolor='#e0e0e0')
     ax1.tick_params(labelsize=10)
     
     # Style Subplot 2: Total R2C
-    ax2.set_xlabel("Experiment Time Unit (Row Index)", fontsize=11, fontweight='semibold')
+    ax2.set_xlabel("Experiment Time (Arrived VNR Count)", fontsize=11, fontweight='semibold')
     ax2.set_ylabel("Total R2C Ratio", fontsize=11, fontweight='semibold')
     ax2.set_title("Evaluation Results: Total R2C over Time", fontsize=13, fontweight='bold', pad=10)
     ax2.legend(loc="best", frameon=True, shadow=False, facecolor='white', edgecolor='#e0e0e0')

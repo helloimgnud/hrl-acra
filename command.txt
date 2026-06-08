@@ -1,0 +1,37 @@
+# ==============================================================================
+# 1. Training on dynamically changing networks each epoch (arrival_rate = 0.04)
+# ==============================================================================
+
+# Shortest method: available_shortest
+python main.py --solver_name="hrl_ac" --sub_solver_name="fast_hpso" --save_interval=1 --eval_interval=10 --num_train_epochs=500 --seed=42 --shortest_method="available_shortest" --renew_v_net_simulator=True --if_adjust_v_sim_setting=True --v_sim_setting_aver_arrival_rate=0.04 --summary_file_name="fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training-avai-dynamic.csv"
+
+# Shortest method: bfs_shortest
+python main.py --solver_name="hrl_ac" --sub_solver_name="fast_hpso" --save_interval=1 --eval_interval=10 --num_train_epochs=500 --seed=42 --shortest_method="bfs_shortest" --renew_v_net_simulator=True --if_adjust_v_sim_setting=True --v_sim_setting_aver_arrival_rate=0.04 --summary_file_name="fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training-bfs-dynamic.csv"
+
+
+# ==============================================================================
+# 2. Training on the pre-generated dataset at eval_dataset_ar_004 (arrival_rate = 0.04)
+# ==============================================================================
+
+# Shortest method: available_shortest
+python main.py --solver_name="hrl_ac" --sub_solver_name="fast_hpso" --save_interval=1 --eval_interval=10 --num_train_epochs=500 --seed=42 --shortest_method="available_shortest" --renew_v_net_simulator=False --p_net_setting_save_dir="eval_dataset_ar_004/p_net" --v_sim_setting_save_dir="eval_dataset_ar_004/v_nets" --if_adjust_v_sim_setting=True --v_sim_setting_aver_arrival_rate=0.04 --v_sim_setting_high_request=50 --v_sim_setting_low_request=5 --summary_file_name="fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training-avai-static.csv"
+
+# Shortest method: bfs_shortest
+python main.py --solver_name="hrl_ac" --sub_solver_name="fast_hpso" --save_interval=1 --eval_interval=10 --num_train_epochs=500 --seed=42 --shortest_method="bfs_shortest" --renew_v_net_simulator=False --p_net_setting_save_dir="eval_dataset_ar_004/p_net" --v_sim_setting_save_dir="eval_dataset_ar_004/v_nets" --if_adjust_v_sim_setting=True --v_sim_setting_aver_arrival_rate=0.04 --v_sim_setting_high_request=50 --v_sim_setting_low_request=5 --summary_file_name="fix_model_v1_exp-wx_100a-hrl_ac-fast_hpso-training-bfs-static.csv"
+
+
+# ==============================================================================
+# 3. Evaluation on pre-generated dataset eval_dataset_ar_004
+# ==============================================================================
+
+# Evaluate fast_hpso heuristic solver
+python run_eval_heuristic.py --solver_name fast_hpso --shortest_method available_shortest --dataset_dir eval_dataset_ar_004 --v_sim_setting_aver_arrival_rate 0.04 --run_id_suffix eval_epoch
+
+# Evaluate nrm_rank heuristic solver
+python run_eval_heuristic.py --solver_name nrm_rank --shortest_method available_shortest --dataset_dir eval_dataset_ar_004 --v_sim_setting_aver_arrival_rate 0.04 --run_id_suffix eval_epoch
+
+# Evaluate hrl_ac with fast_hpso subsolver (learning-based solver) using the model-49 checkpoint
+python run_eval.py --model_path save/hrl_ac/DESKTOP-LJ05KB5-20260608T013352/model/model-49.pkl --shortest_method available_shortest --dataset_dir eval_dataset_ar_004 --run_id_suffix run2
+
+# Evaluate hrl_ac with fast_hpso subsolver (learning-based solver) using the latest run checkpoint (DESKTOP-LJ05KB5-20260608T122431)
+python run_eval.py --model_path save/hrl_ac/DESKTOP-LJ05KB5-20260608T122431/model/model-0.pkl --shortest_method available_shortest --dataset_dir eval_dataset_ar_004 --run_id_suffix run_latest
