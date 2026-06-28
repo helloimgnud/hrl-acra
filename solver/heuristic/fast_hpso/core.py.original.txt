@@ -12,11 +12,6 @@ import networkx as nx
 INFEASIBLE = 1e9
 
 
-def build_hop_table(p_net):
-    """Precompute all-pairs shortest hop counts."""
-    return dict(nx.all_pairs_shortest_path_length(p_net))
-
-
 # ─────────────────────────────────────────────────────────────────────────────
 # 1.  Proxy fitness  (inner loop — no resource reservation)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -140,70 +135,29 @@ def op_plus(p, Vi, q, Vj):
     ]
 
 
-def op_multiply(Xi, V, v_net, p_net, node_res_attrs, hop_table, link_res_attrs, top_k=3):
+def op_multiply(Xi, V, v_net, p_net, node_res_attrs):
     """
     Apply velocity to position.
-
-    Improvement:
-    For each dimension with V[i]==0, rank feasible substrate nodes by the
-    weighted hop distance to currently mapped virtual neighbours and choose
-    randomly among the Top-K best candidates.
+    Dimensions where V[i]=0 → re-sample from feasible p_nodes (maintains injectivity).
+    Dimensions where V[i]=1 → keep current assignment.
     """
     Xnew = Xi.copy()
     vnodes = list(v_net.nodes())
-    vnode_idx = {v: i for i, v in enumerate(vnodes)}
     used = set(Xnew)
 
     for i in range(len(V)):
-        if V[i] != 0:
-            continue
-
-        v = vnodes[i]
-        used.discard(Xnew[i])
-
-        cands = [
-            s for s in p_net.nodes()
-            if all(
-                p_net.nodes[s].get(a, 0) >= v_net.nodes[v].get(a, 0)
-                for a in node_res_attrs
-            )
-            and s not in used
-        ]
-
-        if not cands:
+        if V[i] == 0:
+            v = vnodes[i]
+            used.discard(Xnew[i])
+            cands = [
+                s for s in p_net.nodes()
+                if all(p_net.nodes[s].get(a, 0) >= v_net.nodes[v].get(a, 0)
+                       for a in node_res_attrs)
+                and s not in used
+            ]
+            if cands:
+                Xnew[i] = random.choice(cands)
             used.add(Xnew[i])
-            continue
-
-        scored = []
-
-        for s in cands:
-            score = 0.0
-
-            for nbr in v_net.neighbors(v):
-                nbr_idx = vnode_idx[nbr]
-                mapped_pnode = Xnew[nbr_idx]
-
-                if mapped_pnode is None:
-                    continue
-
-                hops = hop_table.get(s, {}).get(mapped_pnode, 999999)
-
-                bw = (
-                    v_net.edges[v, nbr].get(link_res_attrs[0], 1)
-                    if link_res_attrs else 1
-                )
-
-                score += hops * bw
-
-            scored.append((score, s))
-
-        scored.sort(key=lambda x: x[0])
-
-        k = min(top_k, len(scored))
-        best_nodes = [s for _, s in scored[:k]]
-
-        Xnew[i] = random.choice(best_nodes)
-        used.add(Xnew[i])
 
     return Xnew
 
@@ -255,7 +209,6 @@ def hpso_main_loop(p_net, v_net, node_res_attrs, link_res_attrs,
     succeeds. Returning all pbests lets the caller implement the fallback loop cheaply.
     """
     num_v = v_net.number_of_nodes()
-    hop_table = build_hop_table(p_net)
     swarm = init_swarm(p_net, v_net, n_particles, node_res_attrs)
     if not swarm:
         return None, [], []
@@ -285,7 +238,7 @@ def hpso_main_loop(p_net, v_net, node_res_attrs, link_res_attrs,
             v_inertia = op_plus(a, velocities[i], b, dp)
             velocities[i] = op_plus(1 - c, v_inertia, c, dg)
 
-            new_pos = op_multiply(swarm[i], velocities[i], v_net, p_net, node_res_attrs, hop_table, link_res_attrs)
+            new_pos = op_multiply(swarm[i], velocities[i], v_net, p_net, node_res_attrs)
             new_cost = fast_fitness(new_pos, p_net, v_net, node_res_attrs, link_res_attrs)
 
             if new_cost < pbest_cost[i]:
